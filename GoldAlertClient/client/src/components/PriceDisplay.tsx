@@ -18,26 +18,38 @@ export function PriceDisplay() {
   const [price, setPrice] = useState(82500000);
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [trend, setTrend] = useState<"up" | "down" | "neutral">("neutral");
-  
+
   const { data: alerts } = useAlerts();
   const { toast } = useToast();
-  
+
   // Ref to track notified alerts to avoid spamming toast every 3 seconds for the same alert
   // In a real app, you might want to re-notify after price fluctuates out and back in.
   // For this demo, we'll notify once per "session" or reset after some time.
   const notifiedAlerts = useRef<Set<number>>(new Set());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrice((prev) => {
-        const change = (Math.random() - 0.5) * 500000; // Fluctuate +/- 250k
-        const newPrice = Math.max(70000000, Math.floor(prev + change));
-        
-        setTrend(newPrice > prev ? "up" : newPrice < prev ? "down" : "neutral");
-        return newPrice;
-      });
-      setLastUpdated(new Date());
-    }, 3000);
+    const fetchPrice = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/GoldPrice");
+        if (response.ok) {
+          const data = await response.json();
+          const newPrice = data.price;
+
+          setPrice((prev) => {
+            if (newPrice !== prev) {
+              setTrend(newPrice > prev ? "up" : newPrice < prev ? "down" : "neutral");
+            }
+            return newPrice;
+          });
+          setLastUpdated(new Date()); // Or use data.timestamp
+        }
+      } catch (error) {
+        console.error("Error fetching gold price:", error);
+      }
+    };
+
+    fetchPrice(); // Initial fetch
+    const interval = setInterval(fetchPrice, 10000); // Fetch every 10 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -57,7 +69,7 @@ export function PriceDisplay() {
       if (triggered && !notifiedAlerts.current.has(alert.id)) {
         // Play sound
         const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"); // Simple bell sound
-        audio.play().catch(() => {}); // Ignore autoplay errors
+        audio.play().catch(() => { }); // Ignore autoplay errors
 
         toast({
           title: "CẢNH BÁO GIÁ VÀNG!",
@@ -79,7 +91,7 @@ export function PriceDisplay() {
   return (
     <Card className="border-none shadow-xl bg-gradient-to-br from-[#004d25] to-[#00381b] text-white overflow-hidden relative">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-      
+
       <CardHeader className="pb-2 relative z-10">
         <div className="flex justify-between items-center">
           <CardTitle className="text-yellow-400 font-display text-xl tracking-wider uppercase flex items-center gap-2">
@@ -101,15 +113,14 @@ export function PriceDisplay() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className={`text-4xl md:text-5xl font-bold font-mono tracking-tighter tabular-nums ${
-                  trend === "up" ? "text-green-400" : trend === "down" ? "text-red-400" : "text-white"
-                }`}
+                className={`text-4xl md:text-5xl font-bold font-mono tracking-tighter tabular-nums ${trend === "up" ? "text-green-400" : trend === "down" ? "text-red-400" : "text-white"
+                  }`}
               >
                 {formatCurrency(price)}
               </motion.div>
             </AnimatePresence>
           </div>
-          
+
           <div className="flex flex-col items-end text-right text-xs text-green-100/50">
             <div className="flex items-center gap-1 mb-1">
               <Clock className="w-3 h-3" />

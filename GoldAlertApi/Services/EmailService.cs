@@ -1,5 +1,5 @@
-using System.Net;
-using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Microsoft.Extensions.Options;
 
 namespace GoldAlertApi.Services;
@@ -22,34 +22,32 @@ public class EmailService : IEmailService
     {
         if (string.IsNullOrEmpty(_config.EmailFrom) || string.IsNullOrEmpty(_config.EmailPassword))
         {
-            Console.WriteLine("Email credentials not configured. Skipping email.");
-            return;
+             throw new Exception("Email credentials not configured in appsettings.json");
         }
 
-        try
-        {
-            using (var message = new MailMessage())
-            {
-                message.From = new MailAddress(_config.EmailFrom);
-                message.To.Add(toAddress);
-                message.Subject = subject;
-                message.Body = body;
-                message.IsBodyHtml = false;
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Gold Alert System", _config.EmailFrom));
+        message.To.Add(new MailboxAddress("", toAddress));
+        message.Subject = subject;
 
-                using (var client = new SmtpClient("smtp.gmail.com", 587))
-                {
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential(_config.EmailFrom, _config.EmailPassword);
-
-                    await client.SendMailAsync(message);
-                    Console.WriteLine($"Email sent to {toAddress}");
-                }
-            }
-        }
-        catch (Exception ex)
+        var bodyBuilder = new BodyBuilder
         {
-            Console.WriteLine($"Error sending email: {ex.Message}");
+            HtmlBody = body
+        };
+        message.Body = bodyBuilder.ToMessageBody();
+
+        using (var client = new SmtpClient())
+        {
+            // For testing purposes, we can accept all certificates if needed, 
+            // but standard Gmail usually has valid certs.
+            // client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(_config.EmailFrom, _config.EmailPassword);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+            
+            Console.WriteLine($"Email sent to {toAddress} via MailKit");
         }
     }
 }

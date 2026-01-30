@@ -12,7 +12,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
 
 // Application Services
-builder.Services.AddHttpClient<IGoldPriceService, GoldPriceService>();
+builder.Services.AddHttpClient<IGoldPriceService, GoldPriceService>()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+    });
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IAlertStore, InMemoryAlertStore>();
 
