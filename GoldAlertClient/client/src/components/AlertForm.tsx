@@ -69,7 +69,7 @@ export function AlertForm() {
       <CardContent className="pt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <FormField
                 control={form.control}
                 name="targetPrice"
@@ -77,14 +77,14 @@ export function AlertForm() {
                   <FormItem>
                     <FormLabel className="text-green-800 font-semibold">Giá mục tiêu (VND)</FormLabel>
                     <FormControl>
-                      <div className="flex items-center h-11 w-full rounded-md border border-green-200 bg-white text-green-950 focus-within:ring-2 focus-within:ring-yellow-500/20 focus-within:border-yellow-500 overflow-hidden shadow-sm">
+                      <div className="flex items-center h-11 w-full rounded-md border border-green-200 bg-white ring-offset-background focus-within:ring-2 focus-within:ring-yellow-500/20 focus-within:border-yellow-500 overflow-hidden">
                         <input
                           type="number"
                           placeholder="Nhập giá vàng..."
-                          className="flex-1 h-full min-w-0 bg-transparent px-4 text-lg font-semibold placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="flex-1 w-full min-w-0 bg-transparent px-4 py-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
                         />
-                        <div className="flex items-center justify-center h-full px-4 bg-gray-50 border-l border-green-100 text-sm font-medium text-gray-500 select-none">
+                        <div className="flex items-center justify-center h-full px-4 bg-gray-50 border-l border-green-100 text-sm font-medium text-gray-500 whitespace-nowrap select-none">
                           VND/lượng
                         </div>
                       </div>
