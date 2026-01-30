@@ -75,11 +75,11 @@ export function AlertForm() {
                     <FormLabel className="text-green-800 font-semibold">Giá mục tiêu (VND)</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Input 
-                          type="number" 
-                          placeholder="Nhập giá vàng..." 
-                          className="pl-4 h-11 text-lg font-semibold bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20"
-                          {...field} 
+                        <Input
+                          type="number"
+                          placeholder="Nhập giá vàng..."
+                          className="pl-4 pr-24 h-11 text-lg font-semibold bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20"
+                          {...field}
                         />
                         <div className="absolute right-3 top-2.5 text-xs font-medium text-gray-400 pointer-events-none">
                           VND/lượng
@@ -114,8 +114,8 @@ export function AlertForm() {
               />
             </div>
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full h-12 text-base font-bold bg-yellow-500 hover:bg-yellow-600 text-green-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5"
               disabled={isPending}
             >
