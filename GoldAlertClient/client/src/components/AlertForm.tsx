@@ -77,14 +77,14 @@ export function AlertForm() {
                   <FormItem>
                     <FormLabel className="text-green-800 font-semibold">Giá mục tiêu (VND)</FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <Input
+                      <div className="flex items-center h-11 w-full rounded-md border border-green-200 bg-white text-green-950 focus-within:ring-2 focus-within:ring-yellow-500/20 focus-within:border-yellow-500 overflow-hidden shadow-sm">
+                        <input
                           type="number"
                           placeholder="Nhập giá vàng..."
-                          className="pl-4 pr-24 h-11 text-lg font-semibold bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="flex-1 h-full min-w-0 bg-transparent px-4 text-lg font-semibold placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
                         />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400 pointer-events-none bg-white pl-1">
+                        <div className="flex items-center justify-center h-full px-4 bg-gray-50 border-l border-green-100 text-sm font-medium text-gray-500 select-none">
                           VND/lượng
                         </div>
                       </div>
