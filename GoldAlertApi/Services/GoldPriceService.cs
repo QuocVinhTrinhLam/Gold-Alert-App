@@ -21,8 +21,6 @@ public class GoldPriceService : IGoldPriceService
 
     public async Task<decimal?> GetSjcGoldSellPriceAsync()
     {
-        // Mock data because real API is timing out
-        return await Task.FromResult(90000000m);
         try
         {
             var response = await _httpClient.GetStringAsync(_sjcUrl);
