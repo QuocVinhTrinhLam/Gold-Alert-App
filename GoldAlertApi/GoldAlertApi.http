@@ -1,0 +1,6 @@
+@GoldAlertApi_HostAddress = http://localhost:5206
+
+GET {{GoldAlertApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
