@@ -72,6 +72,3 @@ npm run dev
 4. Nhập **Email** của bạn để nhận tin.
 5. Nhấn **"Thiết lập Cảnh báo"**.
 6. Khi giá vàng thị trường chạm mức bạn cài đặt, bạn sẽ nhận được email ngay lập tức!
-
----
-*Dự án được phát triển bởi [Tên Của Bạn]*
