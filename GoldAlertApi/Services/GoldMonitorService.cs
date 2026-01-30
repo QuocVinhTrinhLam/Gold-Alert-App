@@ -56,7 +56,7 @@ public class GoldMonitorService : BackgroundService
                                 await emailService.SendEmailAsync(
                                     $"Gold Alert: Price {alert.Condition.ToUpper()} {alert.TargetPrice}", 
                                     $"Gold price is now {price.Value:N0} VND. Alert condition: {alert.Condition} {alert.TargetPrice:N0}.",
-                                    _config.EmailTo
+                                    !string.IsNullOrEmpty(alert.Email) ? alert.Email : _config.EmailTo
                                 );
                             }
                         }

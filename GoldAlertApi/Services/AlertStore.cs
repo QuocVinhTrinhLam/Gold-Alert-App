@@ -27,6 +27,7 @@ public class InMemoryAlertStore : IAlertStore
             Id = _nextId++,
             TargetPrice = request.TargetPrice,
             Condition = request.Condition,
+            Email = request.Email,
             CreatedAt = DateTime.UtcNow
         };
         _alerts.TryAdd(alert.Id, alert);

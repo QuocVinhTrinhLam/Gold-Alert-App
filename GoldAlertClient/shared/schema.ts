@@ -7,6 +7,7 @@ export const alerts = pgTable("alerts", {
   id: serial("id").primaryKey(),
   targetPrice: integer("target_price").notNull(),
   condition: text("condition").notNull(), // "above" or "below"
+  email: text("email").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

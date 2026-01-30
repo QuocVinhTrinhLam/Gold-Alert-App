@@ -27,6 +27,7 @@ import { insertAlertSchema } from "@shared/schema";
 // Extend schema for form usage if needed, mostly for coerce
 const formSchema = insertAlertSchema.extend({
   targetPrice: z.coerce.number().min(1000, "Giá phải lớn hơn 1000"),
+  email: z.string().email("Email không hợp lệ"),
 });
 
 export function AlertForm() {
@@ -37,6 +38,7 @@ export function AlertForm() {
     defaultValues: {
       targetPrice: 83000000,
       condition: "above",
+      email: "",
     },
   });
 
@@ -47,6 +49,7 @@ export function AlertForm() {
         form.reset({
           targetPrice: values.targetPrice,
           condition: values.condition,
+          email: values.email,
         });
       }
     });
@@ -78,10 +81,10 @@ export function AlertForm() {
                         <Input
                           type="number"
                           placeholder="Nhập giá vàng..."
-                          className="pl-4 pr-24 h-11 text-lg font-semibold bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20"
+                          className="pl-4 pr-24 h-11 text-lg font-semibold bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
                         />
-                        <div className="absolute right-3 top-2.5 text-xs font-medium text-gray-400 pointer-events-none">
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400 pointer-events-none bg-white pl-1">
                           VND/lượng
                         </div>
                       </div>
@@ -113,6 +116,24 @@ export function AlertForm() {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-green-800 font-semibold">Email nhận cảnh báo</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="nhapweba5@gmail.com"
+                      className="h-11 bg-white border-green-200 focus:border-yellow-500 focus:ring-yellow-500/20"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Button
               type="submit"
